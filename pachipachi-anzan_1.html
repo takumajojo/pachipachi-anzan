@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>ぱちぱち あんざん</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFF6E3;
+  --card:#FFFFFF;
+  --ink:#3A3F5C;
+  --ink-soft:#8B8FA8;
+  --coral:#FF6B6B;
+  --coral-dark:#E14F4F;
+  --teal:#22B8AA;
+  --teal-dark:#149286;
+  --sun:#FFC94A;
+  --sun-dark:#E8A81E;
+  --lav:#8E9BEF;
+  --lav-dark:#6C7BE0;
+  --wood:#F3E8CF;
+  --frame:#4A4F73;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent; user-select:none;}
+html,body{margin:0; padding:0; height:100%;}
+body{
+  background:var(--bg);
+  background-image:radial-gradient(#FFE9B8 12%, transparent 13%);
+  background-size:46px 46px;
+  color:var(--ink);
+  font-family:'M PLUS Rounded 1c','Hiragino Maru Gothic ProN','ヒラギノ丸ゴ ProN W4','Yu Gothic','メイリオ',sans-serif;
+  font-weight:700;
+  display:flex; justify-content:center;
+}
+#app{width:100%; max-width:520px; min-height:100dvh; padding:16px 14px 28px; display:flex; flex-direction:column;}
+
+/* ---------- 共通パーツ ---------- */
+.btn{
+  font-family:inherit; font-weight:800; color:#fff; border:none; cursor:pointer;
+  border-radius:20px; padding:14px 20px; font-size:20px;
+  transition:transform .08s ease;
+}
+.btn:active{transform:translateY(4px);}
+.btn:focus-visible{outline:4px solid var(--lav); outline-offset:2px;}
+.btn.coral{background:var(--coral); box-shadow:0 5px 0 var(--coral-dark);}
+.btn.coral:active{box-shadow:0 1px 0 var(--coral-dark);}
+.btn.teal{background:var(--teal); box-shadow:0 5px 0 var(--teal-dark);}
+.btn.teal:active{box-shadow:0 1px 0 var(--teal-dark);}
+.btn.sun{background:var(--sun); color:#7A5800; box-shadow:0 5px 0 var(--sun-dark);}
+.btn.sun:active{box-shadow:0 1px 0 var(--sun-dark);}
+.btn.lav{background:var(--lav); box-shadow:0 5px 0 var(--lav-dark);}
+.btn.lav:active{box-shadow:0 1px 0 var(--lav-dark);}
+.btn.ghosty{background:#fff; color:var(--ink); box-shadow:0 5px 0 #D8D2C2; border:2px solid #EFE7D2;}
+.btn.ghosty:active{box-shadow:0 1px 0 #D8D2C2;}
+.btn:disabled{opacity:.45; pointer-events:none;}
+
+.card{background:var(--card); border-radius:26px; box-shadow:0 6px 0 rgba(74,79,115,.10); padding:18px;}
+
+/* ---------- ホーム ---------- */
+.home-hero{text-align:center; padding:26px 0 10px;}
+.home-hero .mascot{font-size:56px; display:inline-block; animation:bob 2.4s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-4deg);}50%{transform:translateY(-8px) rotate(4deg);}}
+.home-title{font-size:34px; font-weight:800; letter-spacing:.06em; margin:6px 0 2px;}
+.home-title .pachi{color:var(--coral);}
+.home-sub{color:var(--ink-soft); font-size:14px; margin-bottom:18px;}
+.mode-grid{display:flex; flex-direction:column; gap:12px;}
+.mode-btn{
+  display:flex; align-items:center; gap:14px; text-align:left;
+  background:var(--card); border:none; border-radius:22px; padding:14px 16px;
+  font-family:inherit; cursor:pointer; transition:transform .08s;
+  box-shadow:0 5px 0 rgba(74,79,115,.12);
+}
+.mode-btn:active{transform:translateY(4px); box-shadow:0 1px 0 rgba(74,79,115,.12);}
+.mode-btn:focus-visible{outline:4px solid var(--lav); outline-offset:2px;}
+.mode-icon{
+  width:56px; height:56px; border-radius:18px; flex:none;
+  display:flex; align-items:center; justify-content:center; font-size:28px; color:#fff; font-weight:800;
+}
+.mode-name{font-size:21px; font-weight:800; color:var(--ink);}
+.mode-desc{font-size:12.5px; color:var(--ink-soft); font-weight:700; margin-top:2px;}
+
+/* ---------- レベルえらび ---------- */
+.top-nav{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
+.back-btn{
+  width:44px; height:44px; border-radius:16px; border:none; background:#fff; cursor:pointer;
+  font-size:20px; color:var(--ink); box-shadow:0 4px 0 rgba(74,79,115,.12); font-family:inherit; font-weight:800;
+}
+.back-btn:active{transform:translateY(3px); box-shadow:0 1px 0 rgba(74,79,115,.12);}
+.top-nav h2{margin:0; font-size:22px;}
+.level-list{display:flex; flex-direction:column; gap:12px; margin-top:6px;}
+.level-btn{
+  display:flex; align-items:center; gap:14px; background:#fff; border:none; border-radius:22px;
+  padding:16px; cursor:pointer; font-family:inherit; text-align:left;
+  box-shadow:0 5px 0 rgba(74,79,115,.12); transition:transform .08s;
+}
+.level-btn:active{transform:translateY(4px); box-shadow:0 1px 0 rgba(74,79,115,.12);}
+.level-btn:focus-visible{outline:4px solid var(--lav); outline-offset:2px;}
+.level-num{
+  width:52px; height:52px; border-radius:50%; flex:none; color:#fff;
+  display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:800;
+}
+.level-name{font-size:19px; font-weight:800;}
+.level-stars{font-size:14px; margin-top:2px; letter-spacing:2px;}
+
+/* ---------- ゲーム ---------- */
+.game-head{display:flex; align-items:center; gap:10px; margin-bottom:10px;}
+.progress{flex:1; display:flex; gap:5px; justify-content:center;}
+.pdot{width:12px; height:12px; border-radius:50%; background:#E7DEC8;}
+.pdot.done{background:var(--teal);}
+.pdot.now{background:var(--sun); transform:scale(1.25);}
+.ghost-btn{
+  height:44px; padding:0 12px; border-radius:16px; border:none; background:#fff; cursor:pointer;
+  font-size:14px; font-family:inherit; font-weight:800; color:var(--ink);
+  box-shadow:0 4px 0 rgba(74,79,115,.12);
+}
+.ghost-btn.on{background:var(--frame); color:#fff;}
+.ghost-btn:active{transform:translateY(3px); box-shadow:0 1px 0 rgba(74,79,115,.12);}
+
+.q-card{
+  background:#fff; border-radius:24px; padding:16px 12px; text-align:center;
+  box-shadow:0 6px 0 rgba(74,79,115,.10); margin-bottom:12px; min-height:86px;
+  display:flex; align-items:center; justify-content:center;
+}
+.q-text{font-size:clamp(34px,10vw,46px); font-weight:800; letter-spacing:.04em;}
+.q-flash{font-size:clamp(48px,16vw,72px); font-weight:800; color:var(--coral);}
+.q-hint{font-size:16px; color:var(--ink-soft);}
+
+/* ---------- そろばん ---------- */
+.soro-wrap{background:var(--frame); border-radius:26px; padding:14px 12px 10px; box-shadow:0 6px 0 #33375A;}
+.readout{
+  background:#2E325280; border-radius:14px; color:#fff; text-align:center;
+  font-size:30px; font-weight:800; padding:2px 0 4px; margin-bottom:10px; letter-spacing:.08em;
+  min-height:44px;
+}
+.soro{background:var(--wood); border-radius:16px; padding:12px 6px 6px; display:flex; justify-content:center; gap:6px; position:relative;}
+.rod{position:relative; width:88px; display:flex; flex-direction:column; align-items:center;}
+.rod-line{position:absolute; top:6px; bottom:26px; width:6px; background:#C9B68C; border-radius:3px; left:50%; transform:translateX(-50%);}
+.heaven{position:relative; width:100%; height:76px;}
+.beam{width:100%; height:10px; background:var(--frame); border-radius:5px; z-index:2; position:relative;}
+.earth{position:relative; width:100%; height:198px;}
+.bead{
+  position:absolute; left:50%; margin-left:-36px; width:72px; height:38px; border-radius:50%;
+  cursor:pointer; transition:top .12s ease, filter .12s; z-index:1;
+  border:none; padding:0;
+}
+.bead:focus-visible{outline:4px solid var(--lav);}
+.bead::after{content:''; position:absolute; left:16px; top:7px; width:22px; height:9px; border-radius:50%; background:rgba(255,255,255,.5);}
+.bead.go{background:radial-gradient(circle at 35% 30%, #FF9B9B, var(--coral) 60%, var(--coral-dark)); top:0;}
+.bead.go.active{top:34px;}
+.bead.ichi{background:radial-gradient(circle at 35% 30%, #7FE3D9, var(--teal) 60%, var(--teal-dark));}
+.bead:active{filter:brightness(1.12); transform:scale(.96);}
+.rod-label{margin-top:4px; font-size:14px; color:#8A7A55; font-weight:800; height:20px;}
+.soro.ghost .bead{opacity:.10;}
+.soro.ghost .bead:active{opacity:.3;}
+
+.game-actions{display:flex; gap:10px; margin-top:14px;}
+.game-actions .btn{flex:1; font-size:22px; padding:16px 10px;}
+
+/* ---------- フィードバック ---------- */
+.fb{
+  position:fixed; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  background:rgba(255,246,227,.88); z-index:50; animation:fadein .15s ease;
+}
+@keyframes fadein{from{opacity:0;}to{opacity:1;}}
+.fb-mark{font-size:110px; line-height:1; animation:pop .35s cubic-bezier(.2,1.6,.4,1);}
+@keyframes pop{from{transform:scale(.2);}to{transform:scale(1);}}
+.fb-msg{font-size:30px; font-weight:800; margin-top:8px;}
+.fb-sub{font-size:22px; color:var(--ink-soft); margin-top:6px; font-weight:800;}
+.fb .star{
+  position:absolute; left:50%; top:45%; font-size:26px; pointer-events:none;
+  animation:fly .9s ease-out forwards;
+}
+@keyframes fly{
+  from{transform:translate(0,0) scale(.4) rotate(0deg); opacity:1;}
+  to{transform:translate(var(--dx),var(--dy)) scale(1.2) rotate(220deg); opacity:0;}
+}
+
+/* ---------- つかいかた レッスン ---------- */
+.tut-hero-btn{
+  display:flex; align-items:center; gap:14px; text-align:left; width:100%;
+  background:linear-gradient(135deg,#FFD97A,#FFC94A); border:none; border-radius:22px;
+  padding:16px; cursor:pointer; font-family:inherit; margin-bottom:14px;
+  box-shadow:0 5px 0 var(--sun-dark); transition:transform .08s;
+}
+.tut-hero-btn:active{transform:translateY(4px); box-shadow:0 1px 0 var(--sun-dark);}
+.tut-hero-btn:focus-visible{outline:4px solid var(--lav); outline-offset:2px;}
+.tut-hero-btn .mode-name{color:#6B4E00;}
+.tut-hero-btn .mode-desc{color:#8A6A10;}
+.tut-card{
+  background:#fff; border-radius:24px; padding:16px 18px; margin-bottom:12px;
+  box-shadow:0 6px 0 rgba(74,79,115,.10);
+}
+.tut-title{font-size:20px; font-weight:800; color:var(--coral); margin-bottom:6px;}
+.tut-text{font-size:17px; line-height:1.7;}
+.tut-text b{color:var(--coral); font-size:19px;}
+.target-card{
+  border-radius:20px; padding:10px; text-align:center; margin-bottom:12px;
+  font-size:24px; font-weight:800; background:#FFF1D6; color:#8A6A10;
+  border:3px dashed var(--sun);
+}
+.target-card.ok{background:#DDF6F1; color:var(--teal-dark); border:3px solid var(--teal); animation:pop .35s cubic-bezier(.2,1.6,.4,1);}
+.tut-nav{display:flex; gap:10px; margin-top:14px;}
+.tut-nav .btn{flex:1; font-size:19px;}
+.soro.small-rods{padding-top:12px;}
+
+/* ---------- けっか ---------- */
+.result{text-align:center; padding-top:30px;}
+.result .big-stars{font-size:54px; letter-spacing:6px; margin:14px 0;}
+.result .big-stars span{display:inline-block; animation:pop .5s cubic-bezier(.2,1.6,.4,1) backwards;}
+.result .big-stars span:nth-child(2){animation-delay:.18s;}
+.result .big-stars span:nth-child(3){animation-delay:.36s;}
+.result-msg{font-size:28px; font-weight:800;}
+.result-score{font-size:18px; color:var(--ink-soft); margin:10px 0 26px;}
+.result .btn{display:block; width:100%; margin-top:12px;}
+
+@media (max-width:390px){
+  .rod{width:76px;}
+  .bead{width:62px; margin-left:-31px; height:34px;}
+  .bead.go.active{top:30px;}
+  .heaven{height:68px;}
+  .earth{height:178px;}
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important; transition:none !important;}
+}
+</style>
+</head>
+<body>
+<div id="app"><div id="screen"></div></div>
+
+<script>
+'use strict';
+
+/* ================= 状態 ================= */
+const S = {
+  mode: null,
+  level: 1,
+  qIndex: 0,
+  total: 10,
+  correct: 0,
+  current: null,
+  rods: null,          // そろばんの状態
+  ghost: false,        // みえないモード
+  locked: false,
+  flashTimers: [],
+  best: {}             // このセッション中のベスト星
+};
+
+const MODES = {
+  add:  { name:'たしざん', icon:'＋', color:'var(--coral)',
+          desc:'2けたの たしざんに ちょうせん!',
+          levels:['くりあがり なし','くりあがり あり','100を こえるぞ!'] },
+  sub:  { name:'ひきざん', icon:'－', color:'var(--teal)',
+          desc:'2けたの ひきざんに ちょうせん!',
+          levels:['くりさがり なし','くりさがり あり','おおきい かずから'] },
+  mix:  { name:'ミックス', icon:'？', color:'var(--lav)',
+          desc:'たしざんと ひきざんが まざって でるよ',
+          levels:['やさしい','くりあがり・くりさがり','むずかしい'] },
+  kuku: { name:'かけざん(くく)', icon:'×', color:'var(--sun)',
+          desc:'くくを おぼえよう!',
+          levels:['2・3・4・5 のだん','6・7・8・9 のだん','ぜんぶ ミックス'] },
+  flash:{ name:'フラッシュあんざん', icon:'⚡', color:'var(--coral)',
+          desc:'つぎつぎ でてくる かずを たしてね',
+          levels:['1けたが 3つ','2けたも でるよ','4つ つづけて!'] }
+};
+
+/* ================= おと ================= */
+let AC = null;
+function audio(){ if(!AC){ try{ AC = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } return AC; }
+function tone(freq, dur, type, vol, delay){
+  const ctx = audio(); if(!ctx) return;
+  const t = ctx.currentTime + (delay||0);
+  const o = ctx.createOscillator(), g = ctx.createGain();
+  o.type = type||'sine'; o.frequency.value = freq;
+  g.gain.setValueAtTime(vol||.12, t);
+  g.gain.exponentialRampToValueAtTime(.0001, t+dur);
+  o.connect(g); g.connect(ctx.destination);
+  o.start(t); o.stop(t+dur+.05);
+}
+const sndClick   = () => tone(760,.05,'triangle',.10);
+const sndCorrect = () => { [523,659,784,1047].forEach((f,i)=>tone(f,.16,'sine',.13,i*.09)); };
+const sndWrong   = () => tone(196,.3,'sawtooth',.06);
+const sndFlash   = () => tone(880,.08,'square',.06);
+
+/* ================= もんだい づくり ================= */
+const ri = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
+
+function genAdd(level){
+  let a,b;
+  for(let i=0;i<400;i++){
+    if(level===1){ a=ri(10,88); b=ri(1,89);
+      if(a%10 + b%10 <= 9 && a+b <= 99) break; }
+    else if(level===2){ a=ri(12,89); b=ri(3,89);
+      if(a%10 + b%10 > 9 && a+b <= 99) break; }
+    else { a=ri(25,99); b=ri(25,99);
+      if(a+b >= 100 && a+b <= 190) break; }
+  }
+  return { text:`${a} + ${b} =`, ans:a+b };
+}
+function genSub(level){
+  let a,b;
+  for(let i=0;i<400;i++){
+    if(level===1){ a=ri(21,99); b=ri(1,98);
+      if(b < a && b%10 <= a%10 && a-b >= 1) break; }
+    else if(level===2){ a=ri(21,99); b=ri(2,98);
+      if(b < a && b%10 > a%10) break; }
+    else { a=ri(100,140); b=ri(15,99);
+      if(a-b >= 3) break; }
+  }
+  return { text:`${a} − ${b} =`, ans:a-b };
+}
+function genKuku(level){
+  const dan = level===1 ? [2,3,4,5] : level===2 ? [6,7,8,9] : [1,2,3,4,5,6,7,8,9];
+  const x = dan[ri(0,dan.length-1)], y = ri(1,9);
+  return { text:`${x} × ${y} =`, ans:x*y };
+}
+function genFlash(level){
+  let nums;
+  for(let i=0;i<400;i++){
+    if(level===1)      nums = [ri(1,9), ri(1,9), ri(1,9)];
+    else if(level===2) nums = [ri(10,30), ri(1,20), ri(1,20)];
+    else               nums = [ri(5,30), ri(5,25), ri(5,25), ri(1,20)];
+    const sum = nums.reduce((s,n)=>s+n,0);
+    if(sum <= 130) break;
+  }
+  const interval = level===1 ? 1300 : level===2 ? 1400 : 1200;
+  return { flash:nums, interval, text:nums.join(' + ') + ' =', ans:nums.reduce((s,n)=>s+n,0) };
+}
+function genProblem(){
+  const m = S.mode, lv = S.level;
+  if(m==='add')  return genAdd(lv);
+  if(m==='sub')  return genSub(lv);
+  if(m==='kuku') return genKuku(lv);
+  if(m==='flash')return genFlash(lv);
+  return Math.random() < .5 ? genAdd(lv) : genSub(Math.min(lv, 3));
+}
+
+/* ================= がめん ================= */
+const screenEl = () => document.getElementById('screen');
+function clearFlashTimers(){ S.flashTimers.forEach(t=>clearTimeout(t)); S.flashTimers = []; }
+
+/* ---- ホーム ---- */
+function showHome(){
+  clearFlashTimers();
+  const btns = Object.keys(MODES).map(k => {
+    const m = MODES[k];
+    const best = S.best[k] ? '★'.repeat(S.best[k]) : '';
+    return `<button class="mode-btn" data-mode="${k}">
+      <span class="mode-icon" style="background:${m.color}">${m.icon}</span>
+      <span><span class="mode-name">${m.name} <span style="color:var(--sun)">${best}</span></span>
+      <div class="mode-desc">${m.desc}</div></span>
+    </button>`;
+  }).join('');
+  screenEl().innerHTML = `
+    <div class="home-hero">
+      <span class="mascot">🐰</span>
+      <div class="home-title"><span class="pachi">ぱちぱち</span> あんざん</div>
+      <div class="home-sub">そろばんを ぱちぱち して こたえよう!</div>
+    </div>
+    <button class="tut-hero-btn" id="tutorial">
+      <span class="mode-icon" style="background:#fff; color:var(--sun-dark)">📖</span>
+      <span><span class="mode-name">そろばんの つかいかた</span>
+      <div class="mode-desc">はじめての ひとは ここから! たまを うごかして おぼえよう</div></span>
+    </button>
+    <div class="mode-grid">${btns}</div>`;
+  document.getElementById('tutorial').addEventListener('click', ()=>{ audio(); showTutorial(0); });
+  screenEl().querySelectorAll('.mode-btn').forEach(b=>{
+    b.addEventListener('click', ()=>{ audio(); showLevels(b.dataset.mode); });
+  });
+}
+
+/* ---- レベルえらび ---- */
+function showLevels(mode){
+  S.mode = mode;
+  const m = MODES[mode];
+  const colors = ['var(--teal)','var(--sun)','var(--coral)'];
+  const rows = m.levels.map((name,i)=>{
+    const key = mode + (i+1);
+    const stars = S.best[key] ? '⭐'.repeat(S.best[key]) : '';
+    return `<button class="level-btn" data-lv="${i+1}">
+      <span class="level-num" style="background:${colors[i]}">${i+1}</span>
+      <span><div class="level-name">${name}</div><div class="level-stars">${stars}</div></span>
+    </button>`;
+  }).join('');
+  screenEl().innerHTML = `
+    <div class="top-nav">
+      <button class="back-btn" id="back">←</button>
+      <h2>${m.name}</h2>
+    </div>
+    <div class="level-list">${rows}</div>`;
+  document.getElementById('back').addEventListener('click', showHome);
+  screenEl().querySelectorAll('.level-btn').forEach(b=>{
+    b.addEventListener('click', ()=> startGame(mode, +b.dataset.lv));
+  });
+}
+
+/* ---- ゲーム ---- */
+function startGame(mode, level){
+  S.mode = mode; S.level = level;
+  S.qIndex = 0; S.correct = 0;
+  nextQuestion();
+}
+function newRods(){ return [{go:false,ichi:0},{go:false,ichi:0},{go:false,ichi:0}]; }
+function rodValue(r){ return (r.go?5:0) + r.ichi; }
+function sorobanValue(){ return rodValue(S.rods[0])*100 + rodValue(S.rods[1])*10 + rodValue(S.rods[2]); }
+
+function nextQuestion(){
+  clearFlashTimers();
+  S.current = genProblem();
+  S.rods = newRods();
+  S.locked = false;
+  renderGame();
+  if(S.mode==='flash') runFlash();
+}
+
+function renderGame(){
+  const dots = Array.from({length:S.total}, (_,i)=>
+    `<span class="pdot ${i < S.qIndex ? 'done' : i===S.qIndex ? 'now':''}"></span>`).join('');
+  const isFlash = S.mode==='flash';
+  const qInner = isFlash
+    ? `<div class="q-hint" id="qtext">よ〜く みててね…</div>`
+    : `<div class="q-text" id="qtext">${S.current.text}</div>`;
+  screenEl().innerHTML = `
+    <div class="game-head">
+      <button class="back-btn" id="back">←</button>
+      <div class="progress">${dots}</div>
+      <button class="ghost-btn ${S.ghost?'on':''}" id="ghost">👻 みえない</button>
+    </div>
+    <div class="q-card">${qInner}</div>
+    <div class="soro-wrap">
+      <div class="readout" id="readout"></div>
+      <div class="soro ${S.ghost?'ghost':''}" id="soro">${[0,1,2].map(rodHTML).join('')}</div>
+    </div>
+    <div class="game-actions">
+      <button class="btn ghosty" id="clear">けす</button>
+      <button class="btn coral" id="answer" ${isFlash?'disabled':''}>こたえる!</button>
+    </div>`;
+  document.getElementById('back').addEventListener('click', ()=>showLevels(S.mode));
+  document.getElementById('ghost').addEventListener('click', toggleGhost);
+  document.getElementById('clear').addEventListener('click', ()=>{ S.rods = newRods(); updateBeads(); sndClick(); });
+  document.getElementById('answer').addEventListener('click', checkAnswer);
+  bindBeads();
+  updateBeads();
+}
+
+function rodHTML(i){
+  const labels = ['百のくらい','十のくらい','一のくらい'];
+  return `<div class="rod">
+    <div class="rod-line"></div>
+    <div class="heaven">
+      <button class="bead go" data-rod="${i}" data-type="go" aria-label="5のたま"></button>
+    </div>
+    <div class="beam"></div>
+    <div class="earth">
+      ${[0,1,2,3].map(j=>`<button class="bead ichi" data-rod="${i}" data-idx="${j}" aria-label="1のたま"></button>`).join('')}
+    </div>
+    <div class="rod-label">${labels[i]}</div>
+  </div>`;
+}
+
+function bindBeads(){
+  document.querySelectorAll('.bead').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      if(S.locked) return;
+      const rod = S.rods[+b.dataset.rod];
+      if(b.dataset.type==='go'){ rod.go = !rod.go; }
+      else{
+        const idx = +b.dataset.idx;
+        rod.ichi = (idx < rod.ichi) ? idx : idx+1;
+      }
+      sndClick();
+      updateBeads();
+    });
+  });
+}
+
+function updateBeads(){
+  const TRAVEL = window.innerWidth <= 390 ? 30 : 34;
+  const BH = window.innerWidth <= 390 ? 36 : 40;
+  document.querySelectorAll('.bead').forEach(b=>{
+    const rod = S.rods[+b.dataset.rod];
+    if(b.dataset.type==='go'){
+      b.classList.toggle('active', rod.go);
+    }else{
+      const idx = +b.dataset.idx;
+      const active = idx < rod.ichi;
+      b.style.top = (idx*BH + (active ? 0 : TRAVEL)) + 'px';
+    }
+  });
+  const ro = document.getElementById('readout');
+  if(ro) ro.textContent = S.ghost ? '？？？' : sorobanValue();
+}
+
+function toggleGhost(){
+  S.ghost = !S.ghost;
+  document.getElementById('ghost').classList.toggle('on', S.ghost);
+  document.getElementById('soro').classList.toggle('ghost', S.ghost);
+  updateBeads();
+}
+
+/* ---- フラッシュ ---- */
+function runFlash(){
+  const q = S.current;
+  const qt = () => document.getElementById('qtext');
+  let delay = 900;
+  q.flash.forEach((n)=>{
+    S.flashTimers.push(setTimeout(()=>{
+      const el = qt(); if(!el) return;
+      el.className = 'q-flash';
+      el.textContent = n;
+      el.style.animation = 'none'; void el.offsetWidth;
+      el.style.animation = 'pop .25s cubic-bezier(.2,1.6,.4,1)';
+      sndFlash();
+    }, delay));
+    delay += q.interval;
+  });
+  S.flashTimers.push(setTimeout(()=>{
+    const el = qt(); if(!el) return;
+    el.className = 'q-text';
+    el.textContent = 'ぜんぶで いくつ?';
+    const btn = document.getElementById('answer');
+    if(btn) btn.disabled = false;
+  }, delay));
+}
+
+/* ---- はんてい ---- */
+const PRAISE = ['すごい!','やったね!','そのちょうし!','てんさい!','かんぺき!','ピンポーン!'];
+function checkAnswer(){
+  if(S.locked) return;
+  S.locked = true;
+  clearFlashTimers();
+  const ok = sorobanValue() === S.current.ans;
+  if(ok){ S.correct++; sndCorrect(); } else { sndWrong(); }
+
+  const fb = document.createElement('div');
+  fb.className = 'fb';
+  fb.innerHTML = ok
+    ? `<div class="fb-mark">⭕</div><div class="fb-msg" style="color:var(--teal)">${PRAISE[ri(0,PRAISE.length-1)]}</div>`
+    : `<div class="fb-mark">❌</div><div class="fb-msg" style="color:var(--coral)">ざんねん…</div>
+       <div class="fb-sub">${S.current.text} <b style="color:var(--ink)">${S.current.ans}</b></div>`;
+  document.body.appendChild(fb);
+  if(ok){
+    for(let i=0;i<14;i++){
+      const st = document.createElement('span');
+      st.className = 'star';
+      st.textContent = ['⭐','🌟','✨'][ri(0,2)];
+      st.style.setProperty('--dx', ri(-160,160)+'px');
+      st.style.setProperty('--dy', ri(-200,60)+'px');
+      fb.appendChild(st);
+    }
+  }
+  setTimeout(()=>{
+    fb.remove();
+    S.qIndex++;
+    if(S.qIndex >= S.total) showResult();
+    else nextQuestion();
+  }, ok ? 1300 : 2300);
+}
+
+/* ---- そろばんの つかいかた レッスン ---- */
+const TUTORIAL = [
+  { title:'そろばんって なあに?',
+    text:'これが そろばんだよ。<br>たまを うごかして、かずを つくる どうぐなんだ。<br>まずは すきに タップして あそんでみよう!',
+    rods:1, target:null },
+  { title:'みどりの たまは「1」',
+    text:'みどりの たまは、1つで「1」。<br>タップすると うえに あがるよ。<br>うえに あがった たまの かずを かぞえてね。<br><b>「3」を つくってみよう!</b>',
+    rods:1, target:3 },
+  { title:'あかい たまは「5」',
+    text:'あかい たまは、たった 1つで「5」!<br>タップして したに さげると「5」に なるよ。<br><b>「5」を つくってみよう!</b>',
+    rods:1, target:5 },
+  { title:'あかと みどりを あわせる',
+    text:'あかい たま(5)と みどりの たまを あわせると、6・7・8・9 が つくれるよ。<br>5 + 2 = 7 だね。<br><b>「7」を つくってみよう!</b>',
+    rods:1, target:7 },
+  { title:'けす ときは?',
+    text:'たまを もういちど タップすると、もとに もどるよ。<br>ぜんぶ もどすと「0」!<br><b>「0」に もどしてみよう!</b>',
+    rods:1, target:0, start:{go:true,ichi:3} },
+  { title:'ひだりの ぼうは「十のくらい」',
+    text:'ぼうが 2ほんに ふえたよ!<br>ひだりの ぼうの みどりの たまは、1つで「10」。<br>2つ あげると 20 だよ。<br><b>「20」を つくってみよう!</b>',
+    rods:2, target:20 },
+  { title:'2つの くらいを つかう',
+    text:'「23」は、十のくらいで 2、一のくらいで 3。<br>20 と 3 で 23 だね!<br><b>「23」を つくってみよう!</b>',
+    rods:2, target:23 },
+  { title:'さいごの もんだい!',
+    text:'あかい たまも つかうよ。<br>「58」は、十のくらいが 5、一のくらいが 8。<br>十のくらいの あかい たまは「50」だよ!<br><b>「58」を つくってみよう!</b>',
+    rods:2, target:58 },
+];
+
+const T = { step:0, rods:[], done:false };
+
+function tValue(){
+  return T.rods.reduce((sum,r,i)=> sum + rodValue(r) * Math.pow(10, T.rods.length-1-i), 0);
+}
+
+function showTutorial(step){
+  clearFlashTimers();
+  T.step = step;
+  const st = TUTORIAL[step];
+  T.rods = Array.from({length:st.rods}, ()=>({go:false,ichi:0}));
+  if(st.start) T.rods[0] = {go:st.start.go, ichi:st.start.ichi};
+  T.done = (st.target === null);
+
+  const labels = st.rods===1 ? ['一のくらい'] : ['十のくらい','一のくらい'];
+  const dots = TUTORIAL.map((_,i)=>
+    `<span class="pdot ${i < step ? 'done' : i===step ? 'now':''}"></span>`).join('');
+  const targetHTML = st.target===null
+    ? `<div class="target-card">じゆうに さわってみよう!</div>`
+    : `<div class="target-card" id="target">「${st.target}」を つくろう</div>`;
+
+  screenEl().innerHTML = `
+    <div class="game-head">
+      <button class="back-btn" id="back">←</button>
+      <div class="progress">${dots}</div>
+      <div style="width:44px"></div>
+    </div>
+    <div class="tut-card">
+      <div class="tut-title">${step+1}. ${st.title}</div>
+      <div class="tut-text">${st.text}</div>
+    </div>
+    ${targetHTML}
+    <div class="soro-wrap">
+      <div class="readout" id="readout"></div>
+      <div class="soro small-rods" id="soro">
+        ${T.rods.map((_,i)=>tRodHTML(i, labels[i])).join('')}
+      </div>
+    </div>
+    <div class="tut-nav">
+      <button class="btn ghosty" id="prev" ${step===0?'disabled':''}>← まえへ</button>
+      <button class="btn coral" id="next" ${T.done?'':'disabled'}>${step===TUTORIAL.length-1?'かんせい!':'つぎへ →'}</button>
+    </div>`;
+
+  document.getElementById('back').addEventListener('click', showHome);
+  document.getElementById('prev').addEventListener('click', ()=>showTutorial(step-1));
+  document.getElementById('next').addEventListener('click', ()=>{
+    if(step === TUTORIAL.length-1) showTutorialDone();
+    else showTutorial(step+1);
+  });
+  tBindBeads();
+  tUpdateBeads();
+}
+
+function tRodHTML(i, label){
+  return `<div class="rod">
+    <div class="rod-line"></div>
+    <div class="heaven">
+      <button class="bead go" data-rod="${i}" data-type="go" aria-label="5のたま"></button>
+    </div>
+    <div class="beam"></div>
+    <div class="earth">
+      ${[0,1,2,3].map(j=>`<button class="bead ichi" data-rod="${i}" data-idx="${j}" aria-label="1のたま"></button>`).join('')}
+    </div>
+    <div class="rod-label">${label}</div>
+  </div>`;
+}
+
+function tBindBeads(){
+  document.querySelectorAll('.bead').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const rod = T.rods[+b.dataset.rod];
+      if(b.dataset.type==='go'){ rod.go = !rod.go; }
+      else{
+        const idx = +b.dataset.idx;
+        rod.ichi = (idx < rod.ichi) ? idx : idx+1;
+      }
+      sndClick();
+      tUpdateBeads();
+      tCheckTarget();
+    });
+  });
+}
+
+function tUpdateBeads(){
+  const TRAVEL = window.innerWidth <= 390 ? 30 : 34;
+  const BH = window.innerWidth <= 390 ? 36 : 40;
+  document.querySelectorAll('.bead').forEach(b=>{
+    const rod = T.rods[+b.dataset.rod];
+    if(b.dataset.type==='go'){
+      b.classList.toggle('active', rod.go);
+    }else{
+      const idx = +b.dataset.idx;
+      const active = idx < rod.ichi;
+      b.style.top = (idx*BH + (active ? 0 : TRAVEL)) + 'px';
+    }
+  });
+  const ro = document.getElementById('readout');
+  if(ro) ro.textContent = tValue();
+}
+
+function tCheckTarget(){
+  const st = TUTORIAL[T.step];
+  if(st.target === null || T.done) return;
+  if(tValue() === st.target){
+    T.done = true;
+    sndCorrect();
+    const tg = document.getElementById('target');
+    if(tg){ tg.classList.add('ok'); tg.textContent = '⭕ できた! すごい!'; }
+    const next = document.getElementById('next');
+    if(next) next.disabled = false;
+  }
+}
+
+function showTutorialDone(){
+  screenEl().innerHTML = `
+    <div class="result card" style="margin-top:30px">
+      <div style="font-size:52px">🎓</div>
+      <div class="big-stars"><span>⭐</span><span>⭐</span><span>⭐</span></div>
+      <div class="result-msg">そろばんマスター たんじょう!</div>
+      <div class="result-score">つかいかたは バッチリ!<br>さっそく もんだいに ちょうせんしよう!</div>
+      <button class="btn coral" id="play">あそびに いく!</button>
+      <button class="btn ghosty" id="redo">もういちど レッスン</button>
+    </div>`;
+  sndCorrect();
+  document.getElementById('play').addEventListener('click', showHome);
+  document.getElementById('redo').addEventListener('click', ()=>showTutorial(0));
+}
+
+/* ---- けっか ---- */
+function showResult(){
+  const stars = S.correct >= 9 ? 3 : S.correct >= 7 ? 2 : S.correct >= 4 ? 1 : 0;
+  const key = S.mode + S.level;
+  if(!S.best[key] || stars > S.best[key]) S.best[key] = stars;
+  if(!S.best[S.mode] || stars > S.best[S.mode]) S.best[S.mode] = stars;
+
+  const msg = stars===3 ? 'パーフェクトきゅう! すごい!!'
+            : stars===2 ? 'とっても じょうず!'
+            : stars===1 ? 'よく がんばったね!'
+            : 'つぎは きっと できるよ!';
+  const starStr = stars>0
+    ? Array.from({length:stars},()=>'<span>⭐</span>').join('')
+    : '<span>🌱</span>';
+  screenEl().innerHTML = `
+    <div class="result card">
+      <div style="font-size:44px">${stars===3?'🏆':stars>=1?'🎉':'💪'}</div>
+      <div class="big-stars">${starStr}</div>
+      <div class="result-msg">${msg}</div>
+      <div class="result-score">10もん 中 ${S.correct}もん せいかい</div>
+      <button class="btn coral" id="again">もういちど あそぶ</button>
+      <button class="btn teal" id="levels">レベルを えらぶ</button>
+      <button class="btn ghosty" id="home">ホームに もどる</button>
+    </div>`;
+  if(stars>=2) sndCorrect();
+  document.getElementById('again').addEventListener('click', ()=>startGame(S.mode, S.level));
+  document.getElementById('levels').addEventListener('click', ()=>showLevels(S.mode));
+  document.getElementById('home').addEventListener('click', showHome);
+}
+
+showHome();
+</script>
+</body>
+</html>
