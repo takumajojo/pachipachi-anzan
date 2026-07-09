@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -251,19 +252,19 @@ const S = {
 const MODES = {
   add:  { name:'たしざん', icon:'＋', color:'var(--coral)',
           desc:'2けたの たしざんに ちょうせん!',
-          levels:['くりあがり なし','くりあがり あり','100を こえるぞ!'] },
+          levels:['1年生:1けたどうし','くりあがり なし','くりあがり あり','100を こえるぞ!'] },
   sub:  { name:'ひきざん', icon:'－', color:'var(--teal)',
           desc:'2けたの ひきざんに ちょうせん!',
-          levels:['くりさがり なし','くりさがり あり','おおきい かずから'] },
+          levels:['1年生:1けたどうし','くりさがり なし','くりさがり あり','おおきい かずから'] },
   mix:  { name:'ミックス', icon:'？', color:'var(--lav)',
           desc:'たしざんと ひきざんが まざって でるよ',
-          levels:['やさしい','くりあがり・くりさがり','むずかしい'] },
+          levels:['1年生:やさしい','くりあがり・くりさがり なし','くりあがり・くりさがり あり','むずかしい'] },
   kuku: { name:'かけざん(くく)', icon:'×', color:'var(--sun)',
           desc:'くくを おぼえよう!',
           levels:['2・3・4・5 のだん','6・7・8・9 のだん','ぜんぶ ミックス'] },
   flash:{ name:'フラッシュあんざん', icon:'⚡', color:'var(--coral)',
           desc:'つぎつぎ でてくる かずを たしてね',
-          levels:['1けたが 3つ','2けたも でるよ','4つ つづけて!'] }
+          levels:['1年生:2つの かず','1けたが 3つ','2けたも でるよ','4つ つづけて!'] }
 };
 
 /* ================= おと ================= */
@@ -290,9 +291,11 @@ const ri = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
 function genAdd(level){
   let a,b;
   for(let i=0;i<400;i++){
-    if(level===1){ a=ri(10,88); b=ri(1,89);
+    if(level===1){ a=ri(1,9); b=ri(1,9);
+      break; }
+    else if(level===2){ a=ri(10,88); b=ri(1,89);
       if(a%10 + b%10 <= 9 && a+b <= 99) break; }
-    else if(level===2){ a=ri(12,89); b=ri(3,89);
+    else if(level===3){ a=ri(12,89); b=ri(3,89);
       if(a%10 + b%10 > 9 && a+b <= 99) break; }
     else { a=ri(25,99); b=ri(25,99);
       if(a+b >= 100 && a+b <= 190) break; }
@@ -302,9 +305,11 @@ function genAdd(level){
 function genSub(level){
   let a,b;
   for(let i=0;i<400;i++){
-    if(level===1){ a=ri(21,99); b=ri(1,98);
+    if(level===1){ a=ri(2,18); b=ri(1,9);
+      if(b <= a) break; }
+    else if(level===2){ a=ri(21,99); b=ri(1,98);
       if(b < a && b%10 <= a%10 && a-b >= 1) break; }
-    else if(level===2){ a=ri(21,99); b=ri(2,98);
+    else if(level===3){ a=ri(21,99); b=ri(2,98);
       if(b < a && b%10 > a%10) break; }
     else { a=ri(100,140); b=ri(15,99);
       if(a-b >= 3) break; }
@@ -319,13 +324,14 @@ function genKuku(level){
 function genFlash(level){
   let nums;
   for(let i=0;i<400;i++){
-    if(level===1)      nums = [ri(1,9), ri(1,9), ri(1,9)];
-    else if(level===2) nums = [ri(10,30), ri(1,20), ri(1,20)];
+    if(level===1)      nums = [ri(1,9), ri(1,9)];
+    else if(level===2) nums = [ri(1,9), ri(1,9), ri(1,9)];
+    else if(level===3) nums = [ri(10,30), ri(1,20), ri(1,20)];
     else               nums = [ri(5,30), ri(5,25), ri(5,25), ri(1,20)];
     const sum = nums.reduce((s,n)=>s+n,0);
     if(sum <= 130) break;
   }
-  const interval = level===1 ? 1300 : level===2 ? 1400 : 1200;
+  const interval = level===1 ? 1500 : level===2 ? 1300 : level===3 ? 1400 : 1200;
   return { flash:nums, interval, text:nums.join(' + ') + ' =', ans:nums.reduce((s,n)=>s+n,0) };
 }
 function genProblem(){
@@ -334,7 +340,7 @@ function genProblem(){
   if(m==='sub')  return genSub(lv);
   if(m==='kuku') return genKuku(lv);
   if(m==='flash')return genFlash(lv);
-  return Math.random() < .5 ? genAdd(lv) : genSub(Math.min(lv, 3));
+  return Math.random() < .5 ? genAdd(lv) : genSub(lv);
 }
 
 /* ================= がめん ================= */
@@ -375,7 +381,7 @@ function showHome(){
 function showLevels(mode){
   S.mode = mode;
   const m = MODES[mode];
-  const colors = ['var(--teal)','var(--sun)','var(--coral)'];
+  const colors = ['var(--lav)','var(--teal)','var(--sun)','var(--coral)'];
   const rows = m.levels.map((name,i)=>{
     const key = mode + (i+1);
     const stars = S.best[key] ? '⭐'.repeat(S.best[key]) : '';
